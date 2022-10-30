@@ -1,5 +1,7 @@
 const UserStock = require("../model/UserStockSchema");
-const Order = require("../model/OrderSchema");
+const Order = require("../model/orderSchema");
+const OrderBook = require("../model/orderbookSchema");
+const TradeHistory = require("../model/tradeHistorySchema");
 
 
 
@@ -43,7 +45,9 @@ exports.getuserportfolio = async (req, res) => {
 // get tradehistory = api/v1/tradehistory
 
 exports.gettradehistory = async (req, res) => {
-    const tradehistory = await UserStock.find();
+    // const tradehistory = await UserStock.find();
+    const tradehistory = await TradeHistory.find();
+
 
     res.status(200).json({
         success: true,
@@ -53,30 +57,43 @@ exports.gettradehistory = async (req, res) => {
 
 // get orderbook = api/v1/orderbook
 exports.getorderbook = async (req, res) => {
-     const order_sell = await Order.find({buy_sell: 1}).sort({price: 1, date: -1});
-     const order_buy = await Order.find({buy_sell: 0}).sort({price: -1, date: -1});
-    
-     const order_book_sell = [[]];
-     const order_book_buy = [[]];
+    const order_sell = await Order.find({ buy_sell: 1 }).sort({ price: 1, date: -1 });
+    const order_buy = await Order.find({ buy_sell: 0 }).sort({ price: -1, date: -1 });
 
-     new_order = await Order.findOne();
-     
-      
-    //  order_sell.map((eachItem) => {
-    //         if(!order_book_sell.includes(eachItem.price)){
-    //             order_book_sell.push([eachItem.price, eachItem.quantity]);
-    //         }
-    //         else{
+    order_sell.map((Itemsell) => {
+        order_buy.map(async (Itembuy) => {
+            if (Itemsell.price === Itembuy.price) {
+                if (Itemsell.quantity > Itembuy.quantity) {
+                    quantity = (Itemsell.quantity - Itembuy.quantity)
+                    await Order.updateOne({name: Itemsell.name},{quantity : quantity});
+                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itembuy.quantity, date: Date.now() });
+                    trade.save();
+                    await Order.deleteOne(Itembuy);
+                }
+                else if (Itemsell.quantity < Itembuy.quantity) {
+                    quantity = Itembuy.quantity - Itemsell.quantity;
+                    await Order.updateOne({name: Itembuy.name},{quantity : quantity});
+                    const trade = new TradeHistory({ buy_sell: true, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
+                    trade.save();
+                    await Order.deleteOne(Itemsell);
+                }
+                else {
+                    const trade = new TradeHistory({ buy_sell: true, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
+                    trade.save();
+                    await Order.deleteOne(Itemsell);
+                    await Order.deleteOne(Itembuy);
+                }
+            }
+        })
+    });
 
-    //         }
-    //  });
-    //  const addSimilar = (arr) => {
-    //  addSimilar(order_sell);
 
     res.status(200).json({
         success: true,
         order_sell,
         order_buy
+        // order_book_sell,
+        // order_book_buy
     })
 }
 

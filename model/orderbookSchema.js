@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const orderSchema = new mongoose.Schema({
+const orderBookSchema = new mongoose.Schema({
     buy_sell: {
         type: Boolean,
         required: true
@@ -10,23 +10,14 @@ const orderSchema = new mongoose.Schema({
         default : 0,
         required: true
     },
-    name: {
-        type: String,
-        required: true
-    },
     quantity: {
         type: Number,
         required: true
     },
-    market_type: {
-        type: String,
+    name:{
+        type:String,
         required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
     }
-    
 })
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("OrderBook", orderBookSchema);

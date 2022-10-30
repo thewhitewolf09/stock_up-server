@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router()
 
 
-const {getmarketdata,makeorder,getuserportfolio,postuserportfolio,getorderbook} = require("../controller/marketController");
+const {getmarketdata,makeorder,getuserportfolio,postuserportfolio,getorderbook,gettradehistory} = require("../controller/marketController");
 
 
 //api/v1/marketdata       http://localhost:5000/api/v1/marketdata
@@ -20,5 +20,8 @@ router.route("/userportfolio").get(getuserportfolio);
 
 //api/v1/orderbook       http://localhost:5000/api/v1/orderbook 
 router.route("/orderbook").get(getorderbook);
+
+// api/v1/tradehistory   http://localhost:5000/api/v1/tradehistory
+router.route("/tradehistory").get(gettradehistory);
 
 module.exports = router;  

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const orderSchema = new mongoose.Schema({
+const tradeHistorySchema = new mongoose.Schema({
     buy_sell: {
         type: Boolean,
         required: true
@@ -10,16 +10,16 @@ const orderSchema = new mongoose.Schema({
         default : 0,
         required: true
     },
-    name: {
+    seller: {
+        type: String,
+        required: true
+    },
+    buyer:{
         type: String,
         required: true
     },
     quantity: {
         type: Number,
-        required: true
-    },
-    market_type: {
-        type: String,
         required: true
     },
     date: {
@@ -29,4 +29,4 @@ const orderSchema = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.model("Order", orderSchema);
+module.exports = mongoose.model("TradeHistory", tradeHistorySchema);
