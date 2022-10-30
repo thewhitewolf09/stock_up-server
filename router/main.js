@@ -8,7 +8,6 @@ const {getmarketdata,makeorder,getuserportfolio,postuserportfolio,getorderbook,g
 //api/v1/marketdata       http://localhost:5000/api/v1/marketdata
 router.route("/marketdata").get(getmarketdata); 
 
-
 //api/v1/order       http://localhost:5000/api/v1/order
 router.route("/order").post(makeorder);
 

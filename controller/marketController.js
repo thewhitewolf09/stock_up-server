@@ -7,7 +7,7 @@ const TradeHistory = require("../model/tradeHistorySchema");
 
 // get marketdata = api/v1/marketdata
 exports.getmarketdata = async (req, res) => {
-    const market_data = await UserStock.find();
+    const market_data = await TradeHistory.find().sort({date: -1});
 
     res.status(200).json({
         success: true,
