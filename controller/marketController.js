@@ -53,11 +53,30 @@ exports.gettradehistory = async (req, res) => {
 
 // get orderbook = api/v1/orderbook
 exports.getorderbook = async (req, res) => {
-    const orderbook = await UserStock.find();
+     const order_sell = await Order.find({buy_sell: 1}).sort({price: 1, date: -1});
+     const order_buy = await Order.find({buy_sell: 0}).sort({price: -1, date: -1});
+    
+     const order_book_sell = [[]];
+     const order_book_buy = [[]];
+
+     new_order = await Order.findOne();
+     
+      
+    //  order_sell.map((eachItem) => {
+    //         if(!order_book_sell.includes(eachItem.price)){
+    //             order_book_sell.push([eachItem.price, eachItem.quantity]);
+    //         }
+    //         else{
+
+    //         }
+    //  });
+    //  const addSimilar = (arr) => {
+    //  addSimilar(order_sell);
 
     res.status(200).json({
         success: true,
-        orderbook
+        order_sell,
+        order_buy
     })
 }
 
