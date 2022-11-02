@@ -42,12 +42,11 @@ exports.getuserportfolio = async (req, res) => {
         userportfolio
     })
 }
-// get tradehistory = api/v1/tradehistory
 
+// get tradehistory = api/v1/tradehistory
 exports.gettradehistory = async (req, res) => {
     // const tradehistory = await UserStock.find();
     const tradehistory = await TradeHistory.find();
-
 
     res.status(200).json({
         success: true,
@@ -78,7 +77,7 @@ exports.getorderbook = async (req, res) => {
                     await Order.deleteOne(Itemsell);
                 }
                 else {
-                    const trade = new TradeHistory({ buy_sell: true, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
+                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
                     trade.save();
                     await Order.deleteOne(Itemsell);
                     await Order.deleteOne(Itembuy);
