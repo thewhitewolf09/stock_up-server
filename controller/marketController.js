@@ -1,7 +1,7 @@
 const UserStock = require("../model/UserStockSchema");
 const Order = require("../model/orderSchema");
 const OrderBook = require("../model/orderbookSchema");
-const TradeHistory = require("../model/tradeHistorySchema");
+const TradeHistory = require("../model/tradehistorySchema");
 
 
 
