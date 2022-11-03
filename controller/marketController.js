@@ -65,19 +65,19 @@ exports.getorderbook = async (req, res) => {
                 if (Itemsell.quantity > Itembuy.quantity) {
                     quantity = (Itemsell.quantity - Itembuy.quantity)
                     await Order.updateOne({name: Itemsell.name},{quantity : quantity});
-                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itembuy.quantity, date: Date.now() });
+                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itembuy.quantity });
                     trade.save();
                     await Order.deleteOne(Itembuy);
                 }
                 else if (Itemsell.quantity < Itembuy.quantity) {
                     quantity = Itembuy.quantity - Itemsell.quantity;
                     await Order.updateOne({name: Itembuy.name},{quantity : quantity});
-                    const trade = new TradeHistory({ buy_sell: true, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
+                    const trade = new TradeHistory({ buy_sell: true, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity });
                     trade.save();
                     await Order.deleteOne(Itemsell);
                 }
                 else {
-                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity, date: Date.now() });
+                    const trade = new TradeHistory({ buy_sell: false, price: Itemsell.price, seller: Itemsell.name, buyer: Itembuy.name, quantity: Itemsell.quantity });
                     trade.save();
                     await Order.deleteOne(Itemsell);
                     await Order.deleteOne(Itembuy);
