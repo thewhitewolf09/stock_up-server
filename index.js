@@ -2,22 +2,33 @@ const express = require('express');
 const dotenv = require('dotenv')
 const app = express();
 const cors = require("cors");
+const cookieParser = require('cookie-parser');
 const port = process.env.PORT || 5000; 
 
-const whitelist = ['http://localhost:3000',"https://stockupindia.netlify.app"]
-const corsOptions = {
-  credentials: true,
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error())
-    }
-  }
-}
+// const whitelist = ['http://localhost:3000']
+// const corsOptions = {
+//   credentials: true,
+//   origin: (origin, callback) => {
+//     if (whitelist.indexOf(origin) !== -1) {
+//       callback(null, true)
+//     } else {
+//       callback(new Error())
+//     }
+//   }
+// }
+
+// Enable CORS with credentials
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000'); // Replace with your client-side application's URL
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials (cookies)
+  next();
+});
 
 
-app.use(cors(corsOptions));
+app.use(cors());
+app.use(cookieParser());
 
 app.use(express.json());
 dotenv.config({ path: './config.env' })
